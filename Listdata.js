@@ -31,15 +31,17 @@ const Listdata = () => {
     setRefresh(false);
   };
 
-  const deleteData = (id) => {
-    fetch('${jsonUrl}/${id}', { method: 'DELETE' })
+  function deleteData(id) {
+    fetch(jsonUrl + '/' + id, {
+      method: 'DELETE',
+    })
       .then((response) => response.json())
-      .then(() => {
-        Alert.alert('Data terhapus');
-        fetchData();
+      .then((json) => {
+        console.log(json);
+        alert('Data terhapus');
+        refreshPage();
       })
-      .catch((error) => console.error(error));
-  };
+   }   
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,15 +72,15 @@ const Listdata = () => {
                 </View>
               </View>
               <View style={styles.form}>
-                <Button
-                  title="Hapus"
+                <Button title="Hapus"
                   onPress={() => Alert.alert('Hapus data', 'Yakin akan menghapus data ini?', [
-                    { text: 'Tidak', onPress: () => console.log('Tidak') },
+                    { text: 'Tidak', onPress: () => console.log('button tidak') },
                     { text: 'Ya', onPress: () => deleteData(item.id) },
                   ])}
-                  color="red"
+                  color={'red'}
                 />
               </View>
+
             </TouchableOpacity>
           )}
         />

@@ -1,41 +1,22 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Profil from './App';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUser, faUserGraduate, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { WebView } from 'react-native-webview';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faUserPen, faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons'; // Ensure icons are properly imported
 import Createdata from './Createdata';
 import Listdata from './Listdata';
-// import Editdata from './Editdata';
-import Mahasiswa from './Mahasiswa';
+import EditData from './EditData'; // Import the EditData component
 
 function HomeScreen() {
-  return (
-    <Createdata/>
-  );
+  return <Createdata />;
 }
 
 function SettingsScreen() {
-  return (
-   <Listdata/>
-  );
+  return <Listdata />;
 }
 
 function EditdataScreen() {
-  return (
-   <Editdata/>
-  );
-}
-function WebScreen() {
-  return (
-    <WebView
-      source={{ uri: 'https://github.com/M1narni664' }}
-      style={{ flex: 1 }} // Optional: Makes WebView take up the full screen
-    />
-  );
+  return <EditData />;
 }
 
 const Tab = createBottomTabNavigator();
@@ -44,44 +25,38 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
+        {/* Tab for adding data */}
         <Tab.Screen
           name="Home"
           component={HomeScreen}
           options={{
             headerShown: false,
             tabBarIcon: ({ color }) => (
-              <FontAwesomeIcon icon={faUser} color={color} size={20} />
+              <FontAwesomeIcon icon={faPlusCircle} color={color} size={20} />
             ),
           }}
         />
+        {/* Tab for listing data */}
         <Tab.Screen
           name="Data Mahasiswa"
           component={SettingsScreen}
           options={{
             tabBarIcon: ({ color }) => (
-              <FontAwesomeIcon icon={faUserGraduate} color={color} size={20} />
+              <FontAwesomeIcon icon={faUserPen} color={color} size={20} />
             ),
           }}
         />
+        {/* Tab for editing data */}
         <Tab.Screen
-          name="Github"
-          component={WebScreen}
+          name="Edit"
+          component={EditdataScreen}
           options={{
+            headerShown: false,
             tabBarIcon: ({ color }) => (
-              <FontAwesomeIcon icon={faGithub} color={color} size={20} />
+              <FontAwesomeIcon icon={faEdit} color={color} size={20} />
             ),
           }}
         />
-        {/* <Tab.Screen
-                  name="Edit"
-                  component={EditdataScreen}
-                  options={{
-                    headerShown: false,
-                    tabBarIcon: ({ color }) => (
-                      <FontAwesomeIcon icon={faEdit} color={color} size={20} />
-                    ),
-                  }}
-                /> */}
       </Tab.Navigator>
     </NavigationContainer>
   );
