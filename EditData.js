@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   View,
-  ScrollView,
   TextInput,
   Button,
   StyleSheet,
@@ -15,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faGraduationCap, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const EditData = () => {
-  const jsonUrl = 'http://192.168.201.228:3000/mahasiswa';
+  const jsonUrl = 'http://192.168.86.228:3000/mahasiswa';
   const [isLoading, setLoading] = useState(true);
   const [dataUser, setDataUser] = useState([]);
   const [refresh, setRefresh] = useState(false);
@@ -68,7 +67,7 @@ const EditData = () => {
     })
       .then((response) => response.json())
       .then(() => {
-        alert(selectedUser ? 'Data berhasil diperbarui!' : 'Data berhasil ditambahkan!');
+        alert(selectedUser ? 'Data berhasil diperbarui!' : 'Data berhasil diedit!');
         resetForm();
         refreshPage();
       })
@@ -114,81 +113,79 @@ const EditData = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Text style={styles.title}>
-          {selectedUser ? 'Edit Data Mahasiswa' : 'Tambah Data Mahasiswa'}
-        </Text>
-        <View style={styles.form}>
-          <TextInput
-            style={styles.input}
-            placeholder="Nama Depan"
-            value={first_name}
-            onChangeText={setFirstName}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Nama Belakang"
-            value={last_name}
-            onChangeText={setLastName}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Kelas"
-            value={kelas}
-            onChangeText={setKelas}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Jenis Kelamin"
-            value={gender}
-            onChangeText={setGender}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-          />
-          <Button title={selectedUser ? 'Perbarui Data' : 'Tambah Data'} onPress={submit} />
-          {selectedUser && <Button title="Batal" color="red" onPress={resetForm} />}
-        </View>
-
-        <FlatList
-          style={{ marginTop: 20 }}
-          data={dataUser}
-          onRefresh={refreshPage}
-          refreshing={refresh}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <View style={styles.avatar}>
-                <FontAwesomeIcon icon={faGraduationCap} size={50} />
-              </View>
-              <View>
-                <Text style={styles.cardtitle}>
-                  {item.first_name} {item.last_name}
-                </Text>
-                <Text>{item.kelas}</Text>
-                <Text>{item.gender}</Text>
-              </View>
-              <View style={styles.actionButtons}>
-                <TouchableOpacity onPress={() => selectItem(item)}>
-                  <FontAwesomeIcon icon={faPenToSquare} size={20} style={{ marginHorizontal: 10 }} />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() =>
-                    Alert.alert('Hapus data', 'Yakin akan menghapus data ini?', [
-                      { text: 'Tidak', style: 'cancel' },
-                      { text: 'Ya', onPress: () => deleteData(item.id) },
-                    ])
-                  }>
-                  <FontAwesomeIcon icon={faTrash} size={20} color="red" />
-                </TouchableOpacity>
-              </View>
+      <FlatList
+        data={dataUser}
+        keyExtractor={(item) => item.id.toString()}
+        refreshing={refresh}
+        onRefresh={refreshPage}
+        ListHeaderComponent={
+          <View style={styles.form}>
+            <Text style={styles.title}>
+              {selectedUser ? 'Edit Data Mahasiswa' : 'Edit Data Mahasiswa'}
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Nama Depan"
+              value={first_name}
+              onChangeText={setFirstName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Nama Belakang"
+              value={last_name}
+              onChangeText={setLastName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Kelas"
+              value={kelas}
+              onChangeText={setKelas}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Jenis Kelamin"
+              value={gender}
+              onChangeText={setGender}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+            />
+            <Button title={selectedUser ? 'Perbarui Data' : 'Edit Data'} onPress={submit} />
+            {selectedUser && <Button title="Batal" color="red" onPress={resetForm} />}
+          </View>
+        }
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <View style={styles.avatar}>
+              <FontAwesomeIcon icon={faGraduationCap} size={50} />
             </View>
-          )}
-        />
-      </ScrollView>
+            <View>
+              <Text style={styles.cardtitle}>
+                {item.first_name} {item.last_name}
+              </Text>
+              <Text>{item.kelas}</Text>
+              <Text>{item.gender}</Text>
+            </View>
+            <View style={styles.actionButtons}>
+              <TouchableOpacity onPress={() => selectItem(item)}>
+                <FontAwesomeIcon icon={faPenToSquare} size={20} style={{ marginHorizontal: 10 }} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  Alert.alert('Hapus data', 'Yakin akan menghapus data ini?', [
+                    { text: 'Tidak', style: 'cancel' },
+                    { text: 'Ya', onPress: () => deleteData(item.id) },
+                  ])
+                }>
+                <FontAwesomeIcon icon={faTrash} size={20} color="red" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 };
